@@ -5,8 +5,9 @@ import 'package:omnidoc/app/pages/splash/splash.page.dart';
 import 'package:omnidoc/core/routes/bindings.dart';
 import 'package:omnidoc/core/routes/pages.dart';
 import 'package:omnidoc/core/theme/dark_app_theme.dart';
+import 'package:omnidoc/data/services/login/login.api.service.dart';
 
-void main() {
+void main() async {
   runApp(const MyApp());
 }
 
@@ -35,7 +36,7 @@ class MyApp extends StatelessWidget {
       themeMode: ThemeMode.dark,
       initialRoute: Routes.splash,
       defaultTransition: Transition.cupertino,
-      initialBinding: SplashBinding(),
+      initialBinding: SplashBinding(LoginApiService()),
       getPages: Pages.pages,
       home: const SplashPage(), //LoginPage(),
     );

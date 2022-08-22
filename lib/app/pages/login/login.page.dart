@@ -14,7 +14,7 @@ class LoginPage extends GetView<LoginController> {
       body: SafeArea(child: Obx(() {
         return SingleChildScrollView(
           child: Column(children: <Widget>[
-            Center(child: Image.asset('assets/images/logo_esp.jpeg'))
+            Center(child: Image.asset('assets/images/spotify_logo.png'))
                 .paddingAll(40),
             _containButton(context).paddingOnly(top: 20),
           ]).paddingOnly(top: 10, bottom: 50, left: 16, right: 16),
@@ -36,7 +36,7 @@ class LoginPage extends GetView<LoginController> {
         child: RoundedLoadingButton(
           height: MediaQuery.of(context).size.height * 0.065,
           controller: controller.rondButton.value,
-          onPressed: () => controller.startTime(),
+          onPressed: () => controller.startTime(context),
           resetAfterDuration: true,
           resetDuration: const Duration(seconds: 3),
           color: Theme.of(context).primaryColorLight,

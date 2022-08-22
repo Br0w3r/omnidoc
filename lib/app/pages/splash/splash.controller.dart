@@ -1,34 +1,44 @@
 import 'dart:async';
 import 'package:get/get.dart';
 import 'package:omnidoc/core/routes/pages.dart';
+import 'package:omnidoc/data/services/login/login.contract.dart';
 
 class SplashController extends GetxController {
-  //late IAuthService _service;
+  late final ILoginService _loginService;
 
-  var duration = const Duration(seconds: 4);
-  var urlImage = "assets/images/logo_esp_small.jpeg";
+  var nameCorporation = 'Spotify'.obs;
+  var fadeText = true.obs;
+  var duration = const Duration(seconds: 3);
 
-  SplashController();
+  SplashController(this._loginService);
 
   @override
-  void onInit() {
+  void onInit() async {
     super.onInit();
-    _startTime();
+    await _startTime();
   }
 
   _startTime() async {
-    return Timer(duration, checkLoginUser());
+    return Timer(duration, fadeOut);
+  }
+
+  fadeOut() {
+    fadeText.value = false;
+    return Timer(const Duration(seconds: 1), fadeIn);
+  }
+
+  fadeIn() {
+    nameCorporation.value = 'Cargando...';
+    fadeText.value = true;
+    return Timer(duration, checkLoginUser);
   }
 
   checkLoginUser() async {
-    /*
-    var currentUser = await _service.checkUser();
-    if (currentUser != null && currentUser.id != 0) {
+    var user = await _loginService.checkUser();
+    if (user != null && user.id != null) {
       Get.offAllNamed(Routes.main);
     } else {
       Get.offAllNamed(Routes.login);
     }
-    */
-    Get.offAllNamed(Routes.login);
   }
 }

@@ -28,7 +28,7 @@ class ApiProvider {
     http.Response resp;
 
     final Uri url =
-        Uri.parse((useDefaultUrl ? Environments.apiUrl : '') + endPoint);
+        Uri.parse((useDefaultUrl ? Environments.userProfile : '') + endPoint);
 
     final Map<String, String> headers = <String, String>{};
     headers.putIfAbsent(
@@ -96,8 +96,7 @@ class ApiProvider {
       case 403:
         LocalStorageUtils.setStringKey(Globals.currentUserKey, '');
         Get.offNamedUntil(Routes.login, ModalRoute.withName(Routes.login));
-        return SnackUtils.error(
-            "No tienes Permiso para esta Aplicación", "Error");
+        return SnackUtils.error("Sesión Expirada...", "Advertencia");
       //throw UnauthorisedException();
       case 500:
         SnackUtils.error("Ah ocurrido un error en el servidor", "Advertencia");

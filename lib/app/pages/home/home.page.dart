@@ -9,8 +9,11 @@ class HomePage extends GetView<HomeController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: Column(
-      children: const [Text("Hola")],
-    ));
+      body: SafeArea(
+        child: Column(
+          children: const [Text("Hola")],
+        ),
+      ),
+    );
   }
 }

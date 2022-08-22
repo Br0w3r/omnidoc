@@ -1,18 +1,22 @@
+import 'dart:async';
+
+import 'package:flutter/material.dart';
+import 'package:flutter_web_auth/flutter_web_auth.dart';
 import 'package:get/get.dart';
 import 'package:omnidoc/app/utils/msg.utils.dart';
+import 'package:omnidoc/core/routes/pages.dart';
+import 'package:omnidoc/core/values/environments.dart';
+import 'package:omnidoc/data/services/login/login.contract.dart';
 import 'package:rounded_loading_button/rounded_loading_button.dart';
-import 'package:flutter_web_auth/flutter_web_auth.dart';
 
 class LoginController extends GetxController {
+  late ILoginService _loginService;
+
   var loginText = 'Ingresar'.obs;
   var duration = const Duration(seconds: 3);
   var rondButton = RoundedLoadingButtonController().obs;
 
-  // App specific variables
-  final clientId = '9d70d33d8d284054aee70f955332556f';
-  final callbackUrl = 'https://spotifydata.com/songdata';
-
-  LoginController();
+  LoginController(this._loginService);
 
   @override
   void onClose() {
@@ -20,31 +24,20 @@ class LoginController extends GetxController {
     rondButton.close();
   }
 
-  startTime() async {
+  startTime(BuildContext context) async {
     rondButton.value.start();
-    return singIn();
+    return singIn(context);
   }
 
-  singIn() async {
-    // Construct the url
-    final url = Uri.https('accounts.spotify.com', '/authorize', {
-      'response_type': 'code',
-      'client_id': clientId,
-      'redirect_uri': 'https://spotifydata.com/songdata',
-      'scope': 'user-read-private user-read-email'
+  singIn(BuildContext context) async {
+    await _loginService.singIn().then((model) {
+      if (model!.id != null) {
+        Timer(duration, () => Get.offAllNamed(Routes.main));
+        return rondButton.value.success();
+      } else {
+        SnackUtils.error("Ocurrio un error", "Advertencia");
+        return rondButton.value.error();
+      }
     });
-
-    final result = await FlutterWebAuth.authenticate(
-            url: url.toString(), callbackUrlScheme: 'songdata')
-        .onError((error, stackTrace) {
-      return SnackUtils.error(error.toString(), "advertencia");
-    });
-
-    print(result);
-
-    // Extract code from resulting url
-    final code = Uri.parse(result).queryParameters['code'];
-
-    print("CODE: $code");
   }
 }

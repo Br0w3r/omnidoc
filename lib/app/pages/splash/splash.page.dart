@@ -11,14 +11,24 @@ class SplashPage extends GetView<SplashController> {
       drawerScrimColor: Theme.of(context).scaffoldBackgroundColor,
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: SafeArea(
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: <Widget>[
-              Image.asset(controller.urlImage)
-                  .paddingOnly(top: 20),
-            ],
+        child: Obx(
+          () => Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                Image.asset('assets/images/spotify_animation.gif')
+                    .paddingOnly(top: 20),
+                AnimatedOpacity(
+                  opacity: controller.fadeText.value ? 1.0 : 0.0,
+                  duration: controller.duration,
+                  child: Text(
+                    '${controller.nameCorporation}',
+                    style: Theme.of(context).textTheme.headline3,
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),
